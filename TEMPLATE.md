@@ -30,7 +30,10 @@ the same string, and they have to be.
    their entries in `src/content/index.ts` and `src/scenes/index.ts`. It is there so a fresh clone
    builds and `npm run check` passes — not as content to keep.
 2. **Enable Pages**: Settings → Pages → Source = **GitHub Actions**. The workflow deploys on every
-   push to `main` but cannot create the Pages site itself.
+   push to `main` but cannot create the Pages site itself, so until you do this the deploy job fails
+   at `configure-pages` with `Get Pages site failed` — `npm ci` and `npm run build` having already
+   passed. (That is also why the run on this template repo is red: a template is not a site, and
+   nobody should enable Pages on it.)
 3. **List the site** in `ui-graphl`'s `catalog.json` — one object is the whole listing.
 
 ## What is deliberately not here

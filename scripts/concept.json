@@ -1,0 +1,8 @@
+{
+  "_comment": "Per-repo publishing identity, read by @graphlearning/shell's thumb / gen-descriptions scripts. Env vars (CONCEPT, SITE, APP_PATH, HASHTAGS, PANEL_BG) still override. SWAP every field but `site`.",
+  "concept": "Template",
+  "site": "https://graphl.in",
+  "appPath": "/content-repo-template",
+  "hashtags": "#TechEducation #SoftwareEngineering",
+  "panelBg": "radial-gradient(118% 104% at 70% 34%, #94a3b8 0%, #475569 44%, #0f141a 100%)"
+}

@@ -45,8 +45,9 @@ breaks only on screen. Its comments carry the measured constants; the short vers
   and `/` are **not** break opportunities in CSS, so `snake_case` and paths overflow sideways in a
   way the height model cannot see.
 - **Slides do not scale to fit.** Type size is fixed by the frame (`zoom = paneWidth / 806`,
-  width-proportional only), so an over-long slide **clips at the bottom** with no error. Budget
-  ~1000 design px of modelled height. Bullets cost far more than prose of the same length.
+  width-proportional only), so an over-long slide **clips at the bottom** with no error.
+  `check` fails over 1000 modelled design px; the band below gives the floor too. Bullets cost far
+  more than prose of the same length.
 - **A `focus:` that names no node in its scene is a silent no-op** — nothing lights up.
 - **`icon:` names are NOT guarded.** The engine's lucide registry is `Record<string, LucideIcon>`
   and does not enumerate its keys, so a wrong name type-checks, passes `check`, builds, and renders
@@ -55,7 +56,28 @@ breaks only on screen. Its comments carry the measured constants; the short vers
 - **A section with no wav narrates silence** and records a silent segment. Audio resolves purely by
   convention: `public/audio/<course>/<section-id>.wav`.
 
-What `check` does *not* model: an edge label landing on top of a card. Look at the route.
+What `check` does *not* model: an edge label landing on top of a card, or whether the frame is too
+empty. Look at the route.
+
+### Density targets — the frame must use the space it has
+
+The guarded failure is a slide that overflows. The unguarded one is its opposite: a frame that
+builds green, reads correctly, and leaves half its pane empty. Against the ~1080 design px pane:
+
+| | target | why |
+| --- | --- | --- |
+| slide height | **80–95 %** of the pane (≈ 865–1025px; `SLIDE_H_MAX` caps the top at 1000) | below 80 % the right half looks empty; above ~95 % it risks clipping |
+| scene, binding axis | ≥ 0.85 of the pane | the board should reach the edge it is limited by |
+| scene, area | ≥ 0.55 of the pane (w × h) | a wide board that fills the width but a third of the height wastes the pane |
+| eyebrow | no node under the top-left eyebrow label | boards that bind on height run up to y≈30 |
+
+Levers: **add real content, not padding**; **restack** a board toward the pane's ~1:1 aspect; lower
+scene `padding` to 0.04 for boards that float, **raise** it (0.12–0.17) for tall boards that touch
+the eyebrow.
+
+These are read off the rendered route by eye — `check` models no density at all. The two ratios come
+from one repo's ~80 frames of diagram-and-code-card boards, so a deliberately sparse board can sit
+under them. Targets, not thresholds.
 
 ## Guards before handing over
 
